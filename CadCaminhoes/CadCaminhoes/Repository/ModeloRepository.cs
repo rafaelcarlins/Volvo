@@ -18,13 +18,13 @@ namespace CadCaminhoes.Repository
         }
         public IEnumerable<Modelo> ObterTodos()
         {
-            var modelo = (from m in _dbContext.Modelo
-                        
-                         select new Modelo
-                         {
-                             Tipo = m.Tipo,
-                             AnoModelo = m.AnoModelo,
-                             Descricao = m.Descricao
+            var modelo = (from m in _dbContext.Modelos
+
+                          select new Modelo
+                          {
+                             Tipo = m.Tipo
+                             //AnoModelo = m.AnoModelo,
+                             //Descricao = m.Descricao
                          }).ToList();
             return (modelo);
         }

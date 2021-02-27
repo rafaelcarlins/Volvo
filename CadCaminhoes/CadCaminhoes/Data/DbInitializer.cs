@@ -8,23 +8,26 @@ namespace CadCaminhoes.Data
 {
     public class DbInitializer
     {
-        public static void Initialize(CaminhaoContext caminhao)
+        public static void Initialize(CaminhaoContext context)
         {
-            if (caminhao.Modelo.Any())
+            context.Database.EnsureCreated();
+
+            if (context.Modelos.Any())
             {
-                return;
+                return;   // DB has been seeded
             }
-            else
+
+            var modelos = new Modelo[]
             {
-                var modelo = new Modelo[]
-                {
-                    new Modelo()
-                    {
-                        Tipo="FH",
-                        AnoModelo= Convert.ToString( DateTime.Today),
-                    }
-                };
+                new Modelo { Tipo= "FH", DataModelo="2021-02-26"},
+                new Modelo {  Tipo= "FM", DataModelo="2021-02-26"},
+            };
+            foreach (Modelo s in modelos)
+            {
+                context.Modelos.Add(s);
             }
+            context.SaveChanges();
+
         }
     }
 }

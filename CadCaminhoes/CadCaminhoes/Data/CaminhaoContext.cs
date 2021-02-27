@@ -14,7 +14,12 @@ namespace CadCaminhoes.Data
 
         }
 
-        public DbSet<Modelo> Modelo { get; set; }
+        public DbSet<Modelo> Modelos { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Modelo>().ToTable("Modelo");
+        }
 
     }
 }

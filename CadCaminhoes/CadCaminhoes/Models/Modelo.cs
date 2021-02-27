@@ -8,14 +8,11 @@ namespace CadCaminhoes.Models
 {
     public class Modelo
     {
-        public int Id { get; set; }
-        
+        public int ID { get; set; }
         [Required]
         public string Tipo { get; set; }
-        
         [Required]
-        public string AnoModelo { get; set; }
-        
-        public string Descricao { get; set; }
+        public string DataModelo { get; set; }
+
     }
 }
