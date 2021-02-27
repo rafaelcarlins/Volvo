@@ -188,3 +188,5 @@ C:\Users\Rafael\source\repos\Volvo\CadCaminhoes\CadCaminhoes\obj\Debug\netcoreap
 C:\Users\Rafael\source\repos\Volvo\CadCaminhoes\CadCaminhoes\obj\Debug\netcoreapp3.1\Razor\Views\Caminhaos\Details.cshtml.g.cs
 C:\Users\Rafael\source\repos\Volvo\CadCaminhoes\CadCaminhoes\obj\Debug\netcoreapp3.1\Razor\Views\Caminhaos\Edit.cshtml.g.cs
 C:\Users\Rafael\source\repos\Volvo\CadCaminhoes\CadCaminhoes\obj\Debug\netcoreapp3.1\Razor\Views\Caminhaos\Index.cshtml.g.cs
+C:\Users\Rafael\source\repos\Volvo\CadCaminhoes\CadCaminhoes\bin\Debug\netcoreapp3.1\Humanizer.dll
+C:\Users\Rafael\source\repos\Volvo\CadCaminhoes\CadCaminhoes\obj\Debug\netcoreapp3.1\CadCaminhoes.csprojAssemblyReference.cache
