@@ -13,6 +13,8 @@ namespace CadCaminhoes.Models
         public string Descricao { get; set; }
         [Required]
         public DateTime AnoFabricacao { get; set; }
+        [Required]
+        public DateTime DataModelo { get; set; }
         public int ModeloID { get; set; }
         public Modelo Modelo { get; set; }
     }

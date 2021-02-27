@@ -16,8 +16,10 @@ namespace CadCaminhoes.Data
             {
                 var modelos = new Modelo[]
             {
-                new Modelo { Tipo = "FH", DataModelo = DateTime.Now, Permitido = true},
-                new Modelo {  Tipo = "FM", DataModelo = DateTime.Now, Permitido = true},
+                //new Modelo { Tipo = "FH", DataModelo = DateTime.Now, Permitido = true},
+                //new Modelo {  Tipo = "FM", DataModelo = DateTime.Now, Permitido = true},
+                                new Modelo { Tipo = "FH",  Permitido = true},
+                new Modelo {  Tipo = "FM", Permitido = true},
             };
                 foreach (Modelo s in modelos)
                 {

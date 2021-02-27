@@ -21,11 +21,14 @@ namespace CadCaminhoes.Views
         // GET: Caminhaos
         public async Task<IActionResult> Index()
         {
-            var anoAtual = DateTime.Now;
-            
-            var caminhaoContext = _context.Caminhoes.Include(c => c.Modelo);
-                //.Where(c => c.AnoFabricacao.Equals( ))
-            //    .Where(c => c.Modelo.DataModelo >="2021");
+            var anoAtual = DateTime.Now.Year ;
+            var anoSubsequente = anoAtual + 1;
+            var caminhaoContext = _context.Caminhoes.Include(c => c.Modelo)
+            .Where(c => c.AnoFabricacao >= new DateTime(anoAtual, 1, 1))
+            .Where(c => c.AnoFabricacao <= new DateTime(anoAtual, 12, 31))
+            .Where(c => c.DataModelo >= new DateTime(anoAtual, 1, 1))
+            .Where(c => c.DataModelo <= new DateTime(anoSubsequente, 12, 31));
+
             return View(await caminhaoContext.ToListAsync());
         }
 
@@ -65,7 +68,7 @@ namespace CadCaminhoes.Views
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ID,AnoFabricacao,Descricao, ModeloID, Permitido")] Caminhao caminhao)
+        public async Task<IActionResult> Create([Bind("ID,AnoFabricacao,Descricao, ModeloID, Permitido, DataModelo")] Caminhao caminhao)
         {
             
             if (ModelState.IsValid)
@@ -104,7 +107,7 @@ namespace CadCaminhoes.Views
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("CaminhaoID,AnoFabricacao,Descricao,ModeloID")] Caminhao caminhao)
+        public async Task<IActionResult> Edit(int id, [Bind("CaminhaoID,AnoFabricacao,Descricao,ModeloID, DataModelo")] Caminhao caminhao)
         {
             if (id != caminhao.CaminhaoID)
             {

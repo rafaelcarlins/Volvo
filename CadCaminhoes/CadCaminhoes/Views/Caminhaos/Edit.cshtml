@@ -29,6 +29,11 @@
                 <select asp-for="ModeloID" class="form-control" asp-items="ViewBag.ModeloID"></select>
                 <span asp-validation-for="ModeloID" class="text-danger"></span>
             </div>
+            <div class="form-group">
+                <label asp-for="DataModelo" class="control-label"></label>
+                <input asp-for="DataModelo" class="form-control" />
+                <span asp-validation-for="DataModelo" class="text-danger"></span>
+            </div>
             <input type="hidden" asp-for="Modelo.Permitido" />
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />
