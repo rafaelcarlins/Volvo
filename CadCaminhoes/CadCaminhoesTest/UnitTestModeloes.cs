@@ -8,7 +8,7 @@ using System.Collections.Generic;
 namespace CadCaminhoesTest
 {
     [TestClass]
-    public class UnitTest1
+    public class UnitTestModeloes
     {
         [TestMethod]
         public async void TesteModeloIndexOk(ModeloesController modeloes, CaminhaoContext context)
