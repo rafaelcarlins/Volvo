@@ -12,21 +12,19 @@ namespace CadCaminhoes.Data
         {
             context.Database.EnsureCreated();
 
-            if (context.Modelos.Any())
+            if (!context.Modelos.Any())
             {
-                return;   // DB has been seeded
-            }
-
-            var modelos = new Modelo[]
+                var modelos = new Modelo[]
             {
-                new Modelo { Tipo= "FH", DataModelo="2021-02-26"},
-                new Modelo {  Tipo= "FM", DataModelo="2021-02-26"},
+                new Modelo { Tipo = "FH", DataModelo = DateTime.Now, Permitido = true},
+                new Modelo {  Tipo = "FM", DataModelo = DateTime.Now, Permitido = true},
             };
-            foreach (Modelo s in modelos)
-            {
-                context.Modelos.Add(s);
+                foreach (Modelo s in modelos)
+                {
+                    context.Modelos.Add(s);
+                }
+                context.SaveChanges();
             }
-            context.SaveChanges();
 
         }
     }

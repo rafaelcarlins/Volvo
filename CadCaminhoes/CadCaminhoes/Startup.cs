@@ -35,7 +35,7 @@ namespace CadCaminhoes
             //services.AddDatabaseDeveloperPageExceptionFilter();
             services.AddControllersWithViews();
 
-            services.AddScoped<IModelo, ModeloRepository>();
+            //services.AddScoped<IModelo, ModeloRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

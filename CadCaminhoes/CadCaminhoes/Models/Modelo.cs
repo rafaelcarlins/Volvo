@@ -12,7 +12,8 @@ namespace CadCaminhoes.Models
         [Required]
         public string Tipo { get; set; }
         [Required]
-        public string DataModelo { get; set; }
+        public DateTime DataModelo { get; set; }
+        public bool Permitido { get; set; }
 
     }
 }

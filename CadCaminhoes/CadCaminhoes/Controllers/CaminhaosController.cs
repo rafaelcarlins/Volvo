@@ -8,25 +8,28 @@ using Microsoft.EntityFrameworkCore;
 using CadCaminhoes.Data;
 using CadCaminhoes.Models;
 
-namespace CadCaminhoes.Controllers
+namespace CadCaminhoes.Views
 {
-    public class ModeloesController : Controller
+    public class CaminhaosController : Controller
     {
         private readonly CaminhaoContext _context;
 
-        public ModeloesController(CaminhaoContext context)
+        public CaminhaosController(CaminhaoContext context)
         {
             _context = context;
         }
-
-        // GET: Modeloes
+        // GET: Caminhaos
         public async Task<IActionResult> Index()
         {
-
-            return View(await _context.Modelos.ToListAsync());
+            var anoAtual = DateTime.Now;
+            
+            var caminhaoContext = _context.Caminhoes.Include(c => c.Modelo);
+                //.Where(c => c.AnoFabricacao.Equals( ))
+            //    .Where(c => c.Modelo.DataModelo >="2021");
+            return View(await caminhaoContext.ToListAsync());
         }
 
-        // GET: Modeloes/Details/5
+        // GET: Caminhaos/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -34,64 +37,76 @@ namespace CadCaminhoes.Controllers
                 return NotFound();
             }
 
-            var modelo = await _context.Modelos
-                .FirstOrDefaultAsync(m => m.ID == id);
-            if (modelo == null)
+            var caminhao = await _context.Caminhoes
+                .Include(c => c.Modelo)
+                .Where(c => c.Modelo.Permitido)
+                .FirstOrDefaultAsync(m => m.CaminhaoID == id);
+
+            if (caminhao == null)
             {
                 return NotFound();
             }
 
-            return View(modelo);
+            return View(caminhao);
         }
 
-        // GET: Modeloes/Create
+        // GET: Caminhaos/Create
         public IActionResult Create()
         {
+            var list = (_context.Modelos).Where(c => c.Permitido);
+
+            ViewData["ModeloID"] = new SelectList(list, "ID", "Tipo");
+
             return View();
         }
 
-        // POST: Modeloes/Create
+        // POST: Caminhaos/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ID,Tipo,DataModelo")] Modelo modelo)
+        public async Task<IActionResult> Create([Bind("ID,AnoFabricacao,Descricao, ModeloID, Permitido")] Caminhao caminhao)
         {
+            
             if (ModelState.IsValid)
             {
-                
-                _context.Add(modelo);
+                _context.Add(caminhao);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            
-            return View(modelo);
+            ViewData["ModeloID"] = new SelectList(_context.Modelos, "ID", "Tipo", caminhao.ModeloID);
+            return View(caminhao);
         }
 
-        // GET: Modeloes/Edit/5
+        // GET: Caminhaos/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
             {
                 return NotFound();
             }
-
-            var modelo = await _context.Modelos.FindAsync(id);
-            if (modelo == null)
+            var caminhao = await _context.Caminhoes
+                            .Include(c => c.Modelo)
+                .Where(c => c.CaminhaoID == id)
+                .Where(c => c.Modelo.Permitido)
+                .FirstOrDefaultAsync();
+            if (caminhao == null)
             {
                 return NotFound();
             }
-            return View(modelo);
+            ViewData["ModeloID"] = new SelectList(_context.Modelos, "ID", "Tipo", caminhao.ModeloID);
+            return View(caminhao);
+
         }
 
-        // POST: Modeloes/Edit/5
+        // POST: Caminhaos/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ID,Tipo,DataModelo")] Modelo modelo)
+        public async Task<IActionResult> Edit(int id, [Bind("CaminhaoID,AnoFabricacao,Descricao,ModeloID")] Caminhao caminhao)
         {
-            if (id != modelo.ID)
+            if (id != caminhao.CaminhaoID)
             {
                 return NotFound();
             }
@@ -100,16 +115,12 @@ namespace CadCaminhoes.Controllers
             {
                 try
                 {
-                    if (modelo.Tipo == "FH" || modelo.Tipo == "FM")
-                    {
-                        modelo.Permitido = true;
-                    }
-                    _context.Update(modelo);
+                    _context.Update(caminhao);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!ModeloExists(modelo.ID))
+                    if (!CaminhaoExists(caminhao.CaminhaoID))
                     {
                         return NotFound();
                     }
@@ -118,12 +129,13 @@ namespace CadCaminhoes.Controllers
                         throw;
                     }
                 }
+                ViewData["ModeloID"] = new SelectList(_context.Modelos, "ID", "Tipo", caminhao.ModeloID);
                 return RedirectToAction(nameof(Index));
             }
-            return View(modelo);
+            return View(caminhao);
         }
 
-        // GET: Modeloes/Delete/5
+        // GET: Caminhaos/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -131,30 +143,30 @@ namespace CadCaminhoes.Controllers
                 return NotFound();
             }
 
-            var modelo = await _context.Modelos
-                .FirstOrDefaultAsync(m => m.ID == id);
-            if (modelo == null)
+            var caminhao = await _context.Caminhoes
+                .FirstOrDefaultAsync(m => m.CaminhaoID == id);
+            if (caminhao == null)
             {
                 return NotFound();
             }
 
-            return View(modelo);
+            return View(caminhao);
         }
 
-        // POST: Modeloes/Delete/5
+        // POST: Caminhaos/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var modelo = await _context.Modelos.FindAsync(id);
-            _context.Modelos.Remove(modelo);
+            var caminhao = await _context.Caminhoes.FindAsync(id);
+            _context.Caminhoes.Remove(caminhao);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool ModeloExists(int id)
+        private bool CaminhaoExists(int id)
         {
-            return _context.Modelos.Any(e => e.ID == id);
+            return _context.Caminhoes.Any(e => e.CaminhaoID == id);
         }
     }
 }
