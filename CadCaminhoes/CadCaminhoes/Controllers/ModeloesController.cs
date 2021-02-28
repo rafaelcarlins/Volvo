@@ -100,7 +100,7 @@ namespace CadCaminhoes.Controllers
             {
                 try
                 {
-                    if (modelo.Tipo == "FH" || modelo.Tipo == "FM")
+                    if (modelo.Tipo.ToUpper() == "FH" || modelo.Tipo.ToUpper() == "FM")
                     {
                         modelo.Permitido = true;
                     }

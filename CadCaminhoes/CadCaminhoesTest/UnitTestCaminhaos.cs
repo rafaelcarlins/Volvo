@@ -4,13 +4,49 @@ using CadCaminhoes.Models;
 using CadCaminhoes.Views;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
 using System.Collections.Generic;
+using System.Data.Entity;
+using System.Linq;
 
 namespace CadCaminhoesTest
 {
     [TestClass]
     public class UnitTestCaminhaos
     {
+        [TestMethod]
+        //Filtro de ano Fabricação e ano modelo são executados dentro do metodo Index na controller "camimnhaos"
+        public void TesteModeloIndexAnoFabricacaoModeloPassado(CaminhaosController Caminhaos, CaminhaoContext context)
+        {
+            var anoAtual = DateTime.Now.Year;
+            var anoSubsequente = anoAtual - 1;
+
+            var ListaCaminhoes = context.Caminhoes.Include(c => c.Modelo)
+            .Where(c => c.AnoFabricacao >= new DateTime(anoAtual, 1, 1))
+            .Where(c => c.AnoFabricacao <= new DateTime(anoAtual, 12, 31))
+            .Where(c => c.DataModelo >= new DateTime(anoAtual, 1, 1))
+            .Where(c => c.DataModelo <= new DateTime(anoSubsequente, 12, 31));
+
+            Assert.AreEqual(ListaCaminhoes, null);
+        }
+
+        [TestMethod]
+
+        public void TesteModeloIndexAnoFabricacaoPosterior(CaminhaosController Caminhaos, CaminhaoContext context)
+        {
+            var anoAtual = DateTime.Now.Year;
+            var anoSubsequente = anoAtual + 1;
+            anoAtual += 1;
+
+            var ListaCaminhoes = context.Caminhoes.Include(c => c.Modelo)
+            .Where(c => c.AnoFabricacao >= new DateTime(anoAtual, 1, 1))
+            .Where(c => c.AnoFabricacao <= new DateTime(anoAtual, 12, 31))
+            .Where(c => c.DataModelo >= new DateTime(anoAtual, 1, 1))
+            .Where(c => c.DataModelo <= new DateTime(anoSubsequente, 12, 31));
+
+            Assert.AreEqual(ListaCaminhoes, null);
+        }
+
         [TestMethod]
         public async void TesteModeloIndexOk(CaminhaosController Caminhaos, CaminhaoContext context)
         {
